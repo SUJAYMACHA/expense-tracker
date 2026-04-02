@@ -10,11 +10,18 @@ const rateLimiter = require('./middlewares/rateLimiter');
 
 const app = express();
 
-// Middleware
-app.use(cors({
+// CORS Configuration
+const corsOptions = {
   origin: process.env.FRONTEND_URL || '*',
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+console.log('CORS Origin configured to:', corsOptions.origin);
+
+// Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(rateLimiter);

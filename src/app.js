@@ -9,42 +9,60 @@ const rateLimiter = require('./middlewares/rateLimiter');
 
 const app = express();
 
-// ⚠️ CORS MUST BE FIRST BEFORE ALL OTHER MIDDLEWARE
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+// ============================================
+// ⚠️ CORS MIDDLEWARE - MUST BE FIRST
+// ============================================
+const allowedOrigins = [
+  'https://m-expense-tracker.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
-console.log('🌐 FRONTEND_URL:', frontendUrl);
-console.log('✅ CORS will be enabled for:', frontendUrl);
+console.log('✅ Allowed CORS Origins:', allowedOrigins);
 
-// CORS Headers for ALL requests
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', frontendUrl);
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization');
-  res.header('Access-Control-Max-Age', '86400');
+  const origin = req.headers.origin;
   
-  console.log(`📍 ${req.method} ${req.path} - CORS headers set`);
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization,Cookie');
+    res.setHeader('Access-Control-Max-Age', '86400');
+    res.setHeader('Vary', 'Origin');
+  }
   
-  // Handle OPTIONS preflight requests
+  // Handle preflight OPTIONS requests
   if (req.method === 'OPTIONS') {
-    console.log(`✅ OPTIONS preflight handled for ${req.path}`);
     return res.sendStatus(200);
   }
   
   next();
 });
 
+// ============================================
+// JSON PARSER - BEFORE ROUTES
+// ============================================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ============================================  
+// RATE LIMITER
+// ============================================
 app.use(rateLimiter);
 
-// Routes
+// ============================================
+// ROUTES
+// ============================================
 app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/expenses', expenseRoutes);
 
-// Error handling
+// ============================================
+// ERROR HANDLING - LAST
+// ============================================
 app.use(notFound);
 app.use(errorHandler);
 

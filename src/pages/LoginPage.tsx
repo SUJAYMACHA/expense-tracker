@@ -25,17 +25,14 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-64 h-64 sm:w-96 sm:h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style={{ top: '-10%', left: '-10%' }}></div>
-        <div className="absolute w-64 h-64 sm:w-96 sm:h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style={{ top: '40%', right: '-10%', animationDelay: '2s' }}></div>
-        <div className="absolute w-64 h-64 sm:w-96 sm:h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style={{ bottom: '-10%', left: '40%', animationDelay: '4s' }}></div>
-      </div>
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      {/* Subtle Background Gradient - No animations for better performance */}
+      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)', pointerEvents: 'none' }}></div>
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.1) 0%, transparent 50%)', pointerEvents: 'none' }}></div>
 
       <div className="max-w-md w-full relative z-10">
-        <div className="text-center mb-8 animate-slide-down">
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-4 sm:mb-6 shadow-2xl animate-float">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-4 sm:mb-6 shadow-2xl">
             <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -47,7 +44,7 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        <div className="card-glass backdrop-blur-2xl animate-slide-up">
+        <div className="card-glass backdrop-blur-sm bg-gray-800/40 border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
@@ -141,7 +138,7 @@ export const LoginPage = () => {
         </div>
 
         {/* Feature Pills */}
-        <div className="mt-8 flex justify-center gap-3 flex-wrap animate-fade-in">
+        <div className="mt-8 flex justify-center gap-3 flex-wrap">
           <span className="px-4 py-2 bg-gray-800/50 backdrop-blur-sm rounded-full text-sm font-medium text-gray-300 shadow-md border border-gray-700/50">
             🔒 Secure
           </span>

@@ -30,7 +30,7 @@ Your `.env` file contains sensitive information:
 ### Your MongoDB Connection String (for Vercel)
 
 ```
-mongodb+srv://***REMOVED***%40321@cluster-resume.xa9j7iy.mongodb.net/expense_tracker?retryWrites=true&w=majority&appName=Cluster-resume
+mongodb+srv://your_username:your_encoded_password@your-cluster.mongodb.net/expense_tracker?retryWrites=true&w=majority&appName=YourAppName
 ```
 
 **Note:** Password is URL-encoded: `@` → `%40`

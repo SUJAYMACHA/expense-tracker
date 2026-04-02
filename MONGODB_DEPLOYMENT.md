@@ -77,7 +77,7 @@ mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites
 
 **Example:**
 ```
-mongodb+srv://sujaymachawork_db_user:MySecureP%40ssword@cluster-resume.xa9j7iy.mongodb.net/expense_tracker?retryWrites=true&w=majority
+mongodb+srv://your_username:your_password@your-cluster.mongodb.net/expense_tracker?retryWrites=true&w=majority
 ```
 
 ---
@@ -86,7 +86,7 @@ mongodb+srv://sujaymachawork_db_user:MySecureP%40ssword@cluster-resume.xa9j7iy.m
 
 ### 5.1 Local Development (.env)
 ```bash
-MONGODB_URI=mongodb+srv://sujaymachawork_db_user:***REMOVED***@cluster-resume.xa9j7iy.mongodb.net/expense_tracker?retryWrites=true&w=majority&appName=Cluster-resume
+MONGODB_URI=mongodb+srv://your_username:your_encoded_password@your-cluster.mongodb.net/expense_tracker?retryWrites=true&w=majority&appName=YourAppName
 ```
 
 ### 5.2 Vercel Deployment

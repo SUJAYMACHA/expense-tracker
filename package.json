@@ -4,6 +4,7 @@
   "description": "RESTful API for expense tracking with authentication",
   "main": "src/server.js",
   "scripts": {
+    "build": "echo 'No build step required for Node.js backend'",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "lint": "eslint src/**/*.js",

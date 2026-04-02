@@ -10,18 +10,25 @@ const rateLimiter = require('./middlewares/rateLimiter');
 
 const app = express();
 
-// CORS Configuration
-const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
+// Manual CORS Headers
+app.use((req, res, next) => {
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  
+  // Set CORS headers
+  res.header('Access-Control-Allow-Origin', frontendUrl);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
 
-console.log('CORS Origin configured to:', corsOptions.origin);
-
-// Middleware
-app.use(cors(corsOptions));
+console.log('CORS configured for:', process.env.FRONTEND_URL);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(rateLimiter);

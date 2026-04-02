@@ -10,44 +10,45 @@ const rateLimiter = require('./middlewares/rateLimiter');
 const app = express();
 
 // ============================================
-// ⚠️ CORS MIDDLEWARE - MUST BE FIRST
+// ⚠️ CORS CONFIGURATION - MUST BE FIRST
 // ============================================
-const allowedOrigins = [
-  'https://m-expense-tracker.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-  process.env.FRONTEND_URL
-].filter(Boolean);
 
-console.log('✅ Allowed CORS Origins:', allowedOrigins);
+// Get frontend URL from environment or use defaults
+const frontendUrl = process.env.FRONTEND_URL?.trim() || 'http://localhost:5173';
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
+console.log('='.repeat(60));
+console.log('🌐 CORS Configuration:');
+console.log('   FRONTEND_URL env var:', process.env.FRONTEND_URL);
+console.log('   Using:', frontendUrl);
+console.log('='.repeat(60));
+
+// CORS middleware - MUST be applied before routes
+app.all('*', (req, res, next) => {
+  const origin = req.get('origin');
   
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,Authorization,Cookie');
-    res.setHeader('Access-Control-Max-Age', '86400');
-    res.setHeader('Vary', 'Origin');
-  }
+  // Always set CORS headers for the configured frontend URL
+  res.set('Access-Control-Allow-Origin', frontendUrl);
+  res.set('Access-Control-Allow-Credentials', 'true');
+  res.set('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With');
+  res.set('Access-Control-Max-Age', '86400');
   
-  // Handle preflight OPTIONS requests
+  // Answer OPTIONS requests immediately
   if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
+    console.log('✅ OPTIONS preflight request handled');
+    return res.status(200).end();
   }
   
   next();
 });
 
 // ============================================
-// JSON PARSER - BEFORE ROUTES
+// JSON & URL PARSERS
 // ============================================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ============================================  
+// ============================================
 // RATE LIMITER
 // ============================================
 app.use(rateLimiter);
